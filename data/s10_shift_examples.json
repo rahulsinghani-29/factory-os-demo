@@ -1,0 +1,428 @@
+{
+  "notice": "Synthetic teaching examples. They are not factory records and do not call live APIs.",
+  "shift": {
+    "line": "S10",
+    "department": "Sewing",
+    "shift_start": "08:00",
+    "shift_end": "16:00",
+    "hours_elapsed_in_sheet": 6,
+    "work_date": "2026-11-01",
+    "as_of": "2026-11-01T14:00:00+05:30"
+  },
+  "examples": [
+    {
+      "id": "s10_on_track",
+      "label": "On track · clear · no delay risk",
+      "rows": [
+        {
+          "time": "08:00–09:00",
+          "sewn": 72,
+          "tamil_note": "நன்றாக சென்றது"
+        },
+        {
+          "time": "09:00–10:00",
+          "sewn": 70,
+          "tamil_note": "தடை இல்லை"
+        },
+        {
+          "time": "10:00–11:00",
+          "sewn": 68,
+          "tamil_note": "இயந்திரம் சரி"
+        },
+        {
+          "time": "11:00–12:00",
+          "sewn": 65,
+          "tamil_note": "வேலை தொடர்கிறது"
+        },
+        {
+          "time": "12:00–13:00",
+          "sewn": 62,
+          "tamil_note": "மதியத்திற்குப் பின் தொடரும்"
+        },
+        {
+          "time": "13:00–14:00",
+          "sewn": 63,
+          "tamil_note": "திட்டப்படி உள்ளது"
+        }
+      ],
+      "total_sewn_so_far": 400,
+      "plan_api": {
+        "line": "S10",
+        "target_units_by_16:00": 520,
+        "source_id": "PLAN-S10-01",
+        "sewn_before_shift": 0,
+        "working_windows": [
+          {
+            "start": "2026-11-01T08:00:00+05:30",
+            "end": "2026-11-01T16:00:00+05:30"
+          },
+          {
+            "start": "2026-11-02T08:00:00+05:30",
+            "end": "2026-11-02T16:00:00+05:30"
+          },
+          {
+            "start": "2026-11-03T08:00:00+05:30",
+            "end": "2026-11-03T16:00:00+05:30"
+          }
+        ],
+        "schedule_basis": "Synthetic one 8-hour shift per day, same PO and line; no overtime assumed.",
+        "shift_end": "2026-11-01T16:00:00+05:30",
+        "shift_target_units": 520
+      },
+      "po_details_api": {
+        "po_id": "PO-SYN-101",
+        "total_required": 1000,
+        "due_at": "2026-11-03T17:00:00+05:30",
+        "source_id": "PO-SYN-101"
+      },
+      "whatsapp_updates": [
+        {
+          "text": "Line S10 is running to plan; no stoppage reported.",
+          "source_id": "WA-S10-01"
+        }
+      ],
+      "handoffs": {
+        "cutting": {
+          "status": "420 issued to S10",
+          "source_id": "CUT-S10-01"
+        },
+        "finishing": {
+          "status": "No finished bundle recorded yet; sewing is in progress.",
+          "source_id": "FIN-S10-01"
+        },
+        "qc": {
+          "status": "First 120 inspected; 118 passed, 2 held for rework.",
+          "source_id": "QC-S10-01"
+        }
+      },
+      "expected_clear": true,
+      "expected_delay_risk": "no",
+      "evidence_ids": [
+        "PLAN-S10-01",
+        "PO-SYN-101",
+        "WA-S10-01",
+        "CUT-S10-01",
+        "FIN-S10-01",
+        "QC-S10-01",
+        "SHEET-S10-01",
+        "WA-PHOTO-S10-01"
+      ],
+      "work_date": "2026-11-01",
+      "as_of": "2026-11-01T14:00:00+05:30",
+      "whatsapp_photo_source_id": "WA-PHOTO-S10-01",
+      "image_file": "s10_on_track-camera-v2.png"
+    },
+    {
+      "id": "s10_machine_risk",
+      "label": "Machine issue · clear · delay risk",
+      "rows": [
+        {
+          "time": "08:00–09:00",
+          "sewn": 75,
+          "tamil_note": "வேலை தொடங்கியது"
+        },
+        {
+          "time": "09:00–10:00",
+          "sewn": 73,
+          "tamil_note": "இயந்திரம் மெதுவாக உள்ளது"
+        },
+        {
+          "time": "10:00–11:00",
+          "sewn": 40,
+          "tamil_note": "இயந்திரம் நின்றது"
+        },
+        {
+          "time": "11:00–12:00",
+          "sewn": 0,
+          "tamil_note": "இயந்திரம் இன்னும் நிற்கிறது"
+        },
+        {
+          "time": "12:00–13:00",
+          "sewn": 0,
+          "tamil_note": "பழுது பார்க்கிறது"
+        },
+        {
+          "time": "13:00–14:00",
+          "sewn": 0,
+          "tamil_note": "மீண்டும் தொடங்கவில்லை"
+        }
+      ],
+      "total_sewn_so_far": 188,
+      "plan_api": {
+        "line": "S10",
+        "target_units_by_16:00": 520,
+        "source_id": "PLAN-S10-02",
+        "sewn_before_shift": 0,
+        "working_windows": [
+          {
+            "start": "2026-11-01T08:00:00+05:30",
+            "end": "2026-11-01T16:00:00+05:30"
+          },
+          {
+            "start": "2026-11-02T08:00:00+05:30",
+            "end": "2026-11-02T16:00:00+05:30"
+          },
+          {
+            "start": "2026-11-03T08:00:00+05:30",
+            "end": "2026-11-03T16:00:00+05:30"
+          }
+        ],
+        "schedule_basis": "Synthetic one 8-hour shift per day, same PO and line; no overtime assumed.",
+        "shift_end": "2026-11-01T16:00:00+05:30",
+        "shift_target_units": 520
+      },
+      "po_details_api": {
+        "po_id": "PO-SYN-102",
+        "total_required": 1000,
+        "due_at": "2026-11-03T17:00:00+05:30",
+        "source_id": "PO-SYN-102"
+      },
+      "whatsapp_updates": [
+        {
+          "text": "S10 machine stopped at 10:45; not restarted as of 14:00.",
+          "source_id": "WA-S10-02"
+        }
+      ],
+      "handoffs": {
+        "cutting": {
+          "status": "420 issued to S10",
+          "source_id": "CUT-S10-02"
+        },
+        "finishing": {
+          "status": "No finished bundle recorded yet; sewing is in progress.",
+          "source_id": "FIN-S10-02"
+        },
+        "qc": {
+          "status": "First 100 inspected; 98 passed, 2 held for rework.",
+          "source_id": "QC-S10-02"
+        }
+      },
+      "expected_clear": true,
+      "expected_delay_risk": "yes",
+      "evidence_ids": [
+        "PLAN-S10-02",
+        "PO-SYN-102",
+        "WA-S10-02",
+        "CUT-S10-02",
+        "FIN-S10-02",
+        "QC-S10-02",
+        "SHEET-S10-02",
+        "WA-PHOTO-S10-02"
+      ],
+      "work_date": "2026-11-01",
+      "as_of": "2026-11-01T14:00:00+05:30",
+      "whatsapp_photo_source_id": "WA-PHOTO-S10-02",
+      "image_file": "s10_machine_risk-camera-v2.png"
+    },
+    {
+      "id": "s10_conflict",
+      "label": "Conflicting updates · unclear · supervisor",
+      "rows": [
+        {
+          "time": "08:00–09:00",
+          "sewn": 70,
+          "tamil_note": "வேலை சரி"
+        },
+        {
+          "time": "09:00–10:00",
+          "sewn": 70,
+          "tamil_note": "திட்டப்படி"
+        },
+        {
+          "time": "10:00–11:00",
+          "sewn": 65,
+          "tamil_note": "வேலை தொடர்கிறது"
+        },
+        {
+          "time": "11:00–12:00",
+          "sewn": 60,
+          "tamil_note": "தடை இல்லை"
+        },
+        {
+          "time": "12:00–13:00",
+          "sewn": 55,
+          "tamil_note": "நிலை சரி"
+        },
+        {
+          "time": "13:00–14:00",
+          "sewn": 50,
+          "tamil_note": "வேலை தொடர்கிறது"
+        }
+      ],
+      "total_sewn_so_far": 370,
+      "plan_api": {
+        "line": "S10",
+        "target_units_by_16:00": 520,
+        "source_id": "PLAN-S10-03",
+        "sewn_before_shift": 0,
+        "working_windows": [
+          {
+            "start": "2026-11-01T08:00:00+05:30",
+            "end": "2026-11-01T16:00:00+05:30"
+          },
+          {
+            "start": "2026-11-02T08:00:00+05:30",
+            "end": "2026-11-02T16:00:00+05:30"
+          },
+          {
+            "start": "2026-11-03T08:00:00+05:30",
+            "end": "2026-11-03T16:00:00+05:30"
+          }
+        ],
+        "schedule_basis": "Synthetic one 8-hour shift per day, same PO and line; no overtime assumed.",
+        "shift_end": "2026-11-01T16:00:00+05:30",
+        "shift_target_units": 520
+      },
+      "po_details_api": {
+        "po_id": "PO-SYN-103",
+        "total_required": 1000,
+        "due_at": "2026-11-03T17:00:00+05:30",
+        "source_id": "PO-SYN-103"
+      },
+      "whatsapp_updates": [
+        {
+          "text": "Supervisor reports machine running normally.",
+          "source_id": "WA-S10-03A"
+        },
+        {
+          "text": "Operator reports machine stopped since 13:10.",
+          "source_id": "WA-S10-03B"
+        }
+      ],
+      "handoffs": {
+        "cutting": {
+          "status": "420 issued to S10",
+          "source_id": "CUT-S10-03"
+        },
+        "finishing": {
+          "status": "No finished bundle recorded yet; sewing is in progress.",
+          "source_id": "FIN-S10-03"
+        },
+        "qc": {
+          "status": "QC tally is blurred; pass count cannot be read.",
+          "source_id": "QC-S10-03",
+          "blurry": true
+        }
+      },
+      "expected_clear": false,
+      "expected_delay_risk": null,
+      "evidence_ids": [
+        "PLAN-S10-03",
+        "PO-SYN-103",
+        "WA-S10-03A",
+        "WA-S10-03B",
+        "CUT-S10-03",
+        "FIN-S10-03",
+        "QC-S10-03",
+        "SHEET-S10-03",
+        "WA-PHOTO-S10-03"
+      ],
+      "work_date": "2026-11-01",
+      "as_of": "2026-11-01T14:00:00+05:30",
+      "whatsapp_photo_source_id": "WA-PHOTO-S10-03",
+      "image_file": "s10_conflict-camera-v2.png"
+    },
+    {
+      "id": "s10_missing_plan",
+      "label": "Missing ETA · unclear · supervisor",
+      "rows": [
+        {
+          "time": "08:00–09:00",
+          "sewn": 68,
+          "tamil_note": "வேலை தொடங்கியது"
+        },
+        {
+          "time": "09:00–10:00",
+          "sewn": 67,
+          "tamil_note": "சீராக உள்ளது"
+        },
+        {
+          "time": "10:00–11:00",
+          "sewn": 65,
+          "tamil_note": "வேலை தொடர்கிறது"
+        },
+        {
+          "time": "11:00–12:00",
+          "sewn": 62,
+          "tamil_note": "தடை இல்லை"
+        },
+        {
+          "time": "12:00–13:00",
+          "sewn": 60,
+          "tamil_note": "திட்டப்படி உள்ளது"
+        },
+        {
+          "time": "13:00–14:00",
+          "sewn": 58,
+          "tamil_note": "வேலை தொடர்கிறது"
+        }
+      ],
+      "total_sewn_so_far": 380,
+      "plan_api": {
+        "line": "S10",
+        "target_units_by_16:00": 500,
+        "source_id": "PLAN-S10-04",
+        "sewn_before_shift": 0,
+        "working_windows": [
+          {
+            "start": "2026-11-01T08:00:00+05:30",
+            "end": "2026-11-01T16:00:00+05:30"
+          },
+          {
+            "start": "2026-11-02T08:00:00+05:30",
+            "end": "2026-11-02T16:00:00+05:30"
+          },
+          {
+            "start": "2026-11-03T08:00:00+05:30",
+            "end": "2026-11-03T16:00:00+05:30"
+          }
+        ],
+        "schedule_basis": "Synthetic one 8-hour shift per day, same PO and line; no overtime assumed.",
+        "shift_end": "2026-11-01T16:00:00+05:30",
+        "shift_target_units": 500
+      },
+      "po_details_api": {
+        "po_id": "PO-SYN-104",
+        "total_required": 1000,
+        "due_at": null,
+        "source_id": "PO-SYN-104"
+      },
+      "whatsapp_updates": [
+        {
+          "text": "S10 sewing continues; no interruption reported.",
+          "source_id": "WA-S10-04"
+        }
+      ],
+      "handoffs": {
+        "cutting": {
+          "status": "400 issued to S10",
+          "source_id": "CUT-S10-04"
+        },
+        "finishing": {
+          "status": "No finished bundle recorded yet; sewing is in progress.",
+          "source_id": "FIN-S10-04"
+        },
+        "qc": {
+          "status": "First 150 inspected; 147 passed, 3 held for rework.",
+          "source_id": "QC-S10-04"
+        }
+      },
+      "expected_clear": false,
+      "expected_delay_risk": null,
+      "evidence_ids": [
+        "PLAN-S10-04",
+        "PO-SYN-104",
+        "WA-S10-04",
+        "CUT-S10-04",
+        "FIN-S10-04",
+        "QC-S10-04",
+        "SHEET-S10-04",
+        "WA-PHOTO-S10-04"
+      ],
+      "work_date": "2026-11-01",
+      "as_of": "2026-11-01T14:00:00+05:30",
+      "whatsapp_photo_source_id": "WA-PHOTO-S10-04",
+      "image_file": "s10_missing_plan-camera-v2.png"
+    }
+  ]
+}

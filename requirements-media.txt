@@ -1,0 +1,5 @@
+langgraph==0.6.11
+langgraph-checkpoint-sqlite>=2.0,<3
+langfuse==5.1.0
+streamlit==1.66.0
+Pillow>=10,<13
