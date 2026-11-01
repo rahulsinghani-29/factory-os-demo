@@ -4,17 +4,28 @@ The design accepts a continuing stream of factory updates. The implemented demo 
 
 ```mermaid
 flowchart LR
-  A[Photo or text message] --> B[Read input locally]
-  B --> C[Load editable PO, plan, handoff and prior-message context]
-  C --> D[Calculate pace in Python]
-  D --> E[Qwen: interpret the note against the facts]
-  E --> F[Check quotes, IDs and uncertainty]
-  F --> G[One short report]
-  G --> H[Clear scoped sewing risk]
-  G --> I[Check input or supervisor follow-up]
+  A[Photo or text message] --> B
+  subgraph LG[LangGraph state workflow]
+    B[Read input locally] --> C[Load PO, plan, handoffs and prior notes]
+    C --> D[Calculate pace in Python]
+    D --> E[Qwen: interpret the note against the facts]
+    E --> F[Check quotes, IDs and uncertainty]
+    F --> H[Clear scoped sewing risk]
+    F --> I[Supervisor hold]
+  end
+  H --> G[One short report]
+  I --> G
+  B -. OCR generation .-> LF[Langfuse: optional run and model traces]
+  E -. Qwen generation .-> LF
 ```
 
 The actual compiled graph is built in `src/live_workflow.py`. The Workflow design page lets a reviewer inspect and download its Mermaid representation and view the exact prompts.
+
+## Deliberate framework choices
+
+**LangGraph** defines the state transitions and conditional clear/hold branches. Keeping record loading, arithmetic, model interpretation and validation in separate nodes makes the route understandable and testable. The graph runs in memory for each event; JSON outcomes are saved locally. This is not a claim of durable stream processing or restart-safe graph checkpoints.
+
+**Langfuse** adds opt-in observability around the run and its local model generations. The integration records prompts, outputs, available token usage and timing metadata. Local per-node timings are saved independently of Langfuse. Cloud export requires configured project credentials and a synthetic-data opt-in. Hosted trace receipt and automatic evaluation scores are not verified or implemented, respectively.
 
 ## Model responsibilities
 

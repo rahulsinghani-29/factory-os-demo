@@ -2,6 +2,8 @@
 
 A local AI prototype for turning messy factory updates into a short, source-linked production outlook. All supplied factory records and photographs are synthetic.
 
+**Built deliberately with LangGraph and Langfuse.** LangGraph defines the steps from OCR and source loading to pace calculation, Qwen reasoning, source checks, and clear/unclear routing. Langfuse provides optional tracing of the run and model calls, so prompts, responses, latency and available token usage can be inspected. Local stage traces remain available without cloud tracing.
+
 **The question:** Given six hours of output, a PO due date, the remaining work plan, and floor updates, can sewing finish on time? What needs attention?
 
 The app accepts a photographed sheet or pasted WhatsApp message. It reads the input with local models, calculates pace scenarios in Python, and returns one short report. All supplied factory records and photographs are synthetic.
@@ -27,12 +29,20 @@ GitHub hosts the code and documentation. It does not host the running Streamlit 
 | Input | Four S10 sheet examples, custom photo upload, and pasted production text |
 | OCR | Actual local `gemma3:4b` image transcription through Ollama |
 | Reasoning | Actual local `qwen2.5:7b` call using the message, PO, plan, handoffs and prior notes |
+| LangGraph | An explicit state workflow separates model calls from calculation and source checks, then routes to a clear result or supervisor hold |
 | Forecast | Python calculates slowest-recorded, average and fastest-recorded pace using explicit shift calendars |
 | Report | One short conclusion, with date/count/source checks and details folded away |
-| Trace | Saved node timings, actual model requests/responses, and run outcomes; optional Langfuse export for synthetic data |
+| Langfuse | Optional root-run and model-generation traces for synthetic inputs, including prompts, responses and available usage; local JSON traces are always retained |
 | Evaluation | A weighted 100-point rubric and 17 shared offline regression tests |
 
 There are four navigation sections: **Workflow design**, **Input**, **Output + trace**, and **Eval criteria**. The navigation includes spacing below Streamlit's fixed header so its labels remain visible.
+
+## Why LangGraph and Langfuse
+
+- **LangGraph makes the decision path inspectable.** OCR, record loading, arithmetic, language interpretation and validation are separate nodes. Branches are explicit, and the app exposes the compiled graph and prompts for review. The forecast math stays in Python rather than depending on model arithmetic.
+- **Langfuse makes model behavior inspectable.** Its run and generation observations connect a result to the prompt and local model call that produced it. This supports investigation of slow calls and unsupported answers, and comparison after prompt or model changes.
+
+Langfuse export needs project credentials and explicit synthetic-data opt-in. Hosted receipt has not been independently verified in this release. Local inference has zero API charge; hardware cost is not measured. The evaluation rubric is documented, but automatic Langfuse evaluation scores and asynchronous sampling are not implemented.
 
 ## The four examples
 
