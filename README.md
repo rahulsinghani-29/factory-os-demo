@@ -121,4 +121,4 @@ The offline suite uses mocks and recorded synthetic failures. It does not downlo
 
 The current web application is the supported entry point. Some reusable source modules retain earlier prototype functions, but historical datasets and CLI records are not published.
 
-The [typed workflow and ten draft reference cases](docs/workflow-and-reference-cases.md) expose separate fixture-reader steps and labelled END paths. The Eval criteria page shows the actual reference rows and their label definitions. These synthetic references await independent review; known failures are identified rather than presented as passing evaluations.
+The [typed workflow](docs/workflow-and-reference-cases.md) exposes separate fixture-reader steps and labelled END paths. The Eval criteria page displays the original judge rubric and release policy. Ten draft synthetic reference cases remain in the repository for future review; they are not presented as scored results.
