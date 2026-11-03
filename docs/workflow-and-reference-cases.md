@@ -1,5 +1,7 @@
 # Typed workflow and reference cases
 
+[View the public design chart](assets/workflow-design.svg) · [Inspect the exact configured graph](configured-langgraph.md)
+
 The Workflow design chart overlays proposed message filters on the executable LangGraph. Dashed boxes are design proposals, not implemented runtime steps. The exact configured LangGraph remains separately downloadable in the app. Each step is labelled CODE, IF / ELSE, LLM CALL, or TOOL CALL. Photo OCR and text preservation have separate routes. Audio/video ends with an unsupported-input report. Failures route through a saved unclear result and then END.
 
 PO details, handoff/QC status, the production plan and preceding messages are separate read-only tool adapters. They read the supplied synthetic snapshots. They do not call live factory APIs. The incoming event represents one WhatsApp-style upload/pasted message; the live connector is not configured. A supervisor hold does not create or send a real task.

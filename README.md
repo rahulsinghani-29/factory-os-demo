@@ -10,7 +10,17 @@ The app accepts a photographed sheet or pasted WhatsApp message. It reads the in
 
 [Run locally](docs/RUNBOOK.md) · [Architecture](docs/ARCHITECTURE.md) · [Evaluation rubric](docs/EVALUATION.md) · [Evidence and limits](docs/RELIABILITY.md) · [AI tools and decisions](docs/AI-TOOLS.md)
 
-![Synthetic S10 shift sheet with six filled hours and two blank future hours](data/s10_samples/s10_on_track-camera-v2.png)
+## Workflow design
+
+This is the chart shown in the prototype. Every node is labelled **CODE**, **IF / ELSE**, **LLM CALL**, or **TOOL CALL**. Connectors use right-angle turns.
+
+**Dashed boxes are proposed filters, not running code.** They check message relevance and use the previous three messages only when the PO context is unambiguous. There is no 15-minute suppression check. The overview groups error exits to keep it readable.
+
+[![Factory OS workflow design, including clearly marked proposed message filters](docs/assets/workflow-design.svg)](docs/assets/workflow-design.svg)
+
+[Open the full-size design chart](docs/assets/workflow-design.svg) · [Download its DOT source](docs/assets/workflow-design.dot) · [Inspect the exact configured LangGraph](docs/configured-langgraph.md) · [Read the graph builder](src/live_workflow.py)
+
+All source tools use local fixture records. No live WhatsApp or factory API is connected, and no supervisor task is sent.
 
 ## Review the demo in five minutes
 
@@ -54,6 +64,8 @@ Each example represents line **S10 / Sewing 10**, an eight-hour shift from 08:00
 | Machine stoppage | 188 | Average pace projects 752 pieces against 1,000 required; recovery is needed |
 | Conflicting updates | 370 | A numeric projection can exist while source facts still need checking |
 | Missing due date | 380 | Show shift progress, but do not invent a PO finish deadline |
+
+![Synthetic S10 shift sheet with six filled hours and two blank future hours](data/s10_samples/s10_on_track-camera-v2.png)
 
 These are scenarios, not prefilled model answers. The live path does not pass expected labels or fixture row text to image OCR. It reads the actual image. Figures depend on the transcription and supplied context.
 

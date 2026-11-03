@@ -1,0 +1,88 @@
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	receive_message(receive_message<hr/><small><em>kind = CODE
+label = Accept one incoming WhatsApp-style message</em></small>)
+	route_input(route_input<hr/><small><em>kind = IF / ELSE
+label = Photo, text, or unsupported audio/video?</em></small>)
+	ocr_photo(ocr_photo<hr/><small><em>kind = LLM CALL
+label = Transcribe photo with Gemma 3 4B via Ollama</em></small>)
+	preserve_text(preserve_text<hr/><small><em>kind = CODE
+label = Preserve the original text</em></small>)
+	parse_document(parse_document<hr/><small><em>kind = CODE
+label = Read PO, line and hourly rows from text</em></small>)
+	get_po_details(get_po_details<hr/><small><em>kind = TOOL CALL
+label = Get PO due date and required quantity
+Local fixture API adapter</em></small>)
+	get_handoff_status(get_handoff_status<hr/><small><em>kind = TOOL CALL
+label = Get cutting, finishing and QC status
+Local fixture API adapter</em></small>)
+	get_production_plan(get_production_plan<hr/><small><em>kind = TOOL CALL
+label = Get working calendar and prior sewn total
+Local fixture API adapter</em></small>)
+	get_prior_messages(get_prior_messages<hr/><small><em>kind = TOOL CALL
+label = Get preceding WhatsApp updates
+Local fixture adapter</em></small>)
+	calculate_pace_scenarios(calculate_pace_scenarios<hr/><small><em>kind = CODE
+label = Calculate pace within planned work hours</em></small>)
+	qwen_inference(qwen_inference<hr/><small><em>kind = LLM CALL
+label = Compare the message with records using Qwen</em></small>)
+	validate_evidence(validate_evidence<hr/><small><em>kind = CODE
+label = Check quotes, references and uncertainty</em></small>)
+	route_result(route_result<hr/><small><em>kind = IF / ELSE
+label = Is the checked result clear or unclear?</em></small>)
+	clear_result(clear_result<hr/><small><em>kind = CODE
+label = Keep the clear sewing-risk result
+Routing marker; no new check</em></small>)
+	supervisor_hold(supervisor_hold<hr/><small><em>kind = CODE
+label = Keep the unclear result for follow-up
+Routing marker; no task is sent</em></small>)
+	unsupported_media(unsupported_media<hr/><small><em>kind = CODE
+label = Hold unsupported audio/video input</em></small>)
+	run_failed(run_failed<hr/><small><em>kind = CODE
+label = Keep the failure as an unclear result</em></small>)
+	prepare_report(prepare_report<hr/><small><em>kind = CODE
+label = Prepare the report
+Python templates; no LLM call</em></small>)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> receive_message;
+	calculate_pace_scenarios -. &nbsp;next&nbsp; .-> qwen_inference;
+	calculate_pace_scenarios -. &nbsp;failed&nbsp; .-> run_failed;
+	clear_result --> prepare_report;
+	get_handoff_status -. &nbsp;next&nbsp; .-> get_production_plan;
+	get_handoff_status -. &nbsp;failed&nbsp; .-> run_failed;
+	get_po_details -. &nbsp;next&nbsp; .-> get_handoff_status;
+	get_po_details -. &nbsp;failed&nbsp; .-> run_failed;
+	get_prior_messages -. &nbsp;next&nbsp; .-> calculate_pace_scenarios;
+	get_prior_messages -. &nbsp;failed&nbsp; .-> run_failed;
+	get_production_plan -. &nbsp;next&nbsp; .-> get_prior_messages;
+	get_production_plan -. &nbsp;failed&nbsp; .-> run_failed;
+	ocr_photo -. &nbsp;next&nbsp; .-> parse_document;
+	ocr_photo -. &nbsp;failed&nbsp; .-> run_failed;
+	parse_document -. &nbsp;next&nbsp; .-> get_po_details;
+	parse_document -. &nbsp;failed&nbsp; .-> run_failed;
+	preserve_text -. &nbsp;next&nbsp; .-> parse_document;
+	preserve_text -. &nbsp;failed&nbsp; .-> run_failed;
+	qwen_inference -. &nbsp;failed&nbsp; .-> run_failed;
+	qwen_inference -. &nbsp;next&nbsp; .-> validate_evidence;
+	receive_message -. &nbsp;next&nbsp; .-> route_input;
+	receive_message -. &nbsp;failed&nbsp; .-> run_failed;
+	route_input -. &nbsp;photo&nbsp; .-> ocr_photo;
+	route_input -. &nbsp;text&nbsp; .-> preserve_text;
+	route_input -. &nbsp;unsupported&nbsp; .-> unsupported_media;
+	route_result -. &nbsp;clear&nbsp; .-> clear_result;
+	route_result -. &nbsp;unclear&nbsp; .-> supervisor_hold;
+	run_failed --> prepare_report;
+	supervisor_hold --> prepare_report;
+	unsupported_media --> prepare_report;
+	validate_evidence -. &nbsp;next&nbsp; .-> route_result;
+	validate_evidence -. &nbsp;failed&nbsp; .-> run_failed;
+	prepare_report --> __end__;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc
+
