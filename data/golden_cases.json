@@ -1,0 +1,897 @@
+{
+  "version": "draft-reference-v1",
+  "synthetic": true,
+  "review_status": "pending_independent_review",
+  "notice": "Ten authored reference cases, not ten passing model runs. These test text interpretation, math and routing expectations. No original photo/audio/video assets are included, so this is not a perception benchmark. Expected labels must never be sent to inference. G08 and G10 capture known validation gaps; results have not been scored here.",
+  "cases": [
+    {
+      "case_id": "G01",
+      "title": "Steady six-hour progress",
+      "source_id": "GOLD-01-INPUT",
+      "source_kind": "text",
+      "language": "English",
+      "source_asset": null,
+      "reference_text": "PO-SYN-101, line S10. Date: 2026-11-01. As of 14:00 IST.\nHour | Pieces sewn | Running total | Remarks\n08:00–09:00 | 72 | 72 |\n09:00–10:00 | 70 | 142 |\n10:00–11:00 | 68 | 210 |\n11:00–12:00 | 65 | 275 |\n12:00–13:00 | 62 | 337 |\n13:00–14:00 | 63 | 400 |\n14:00–15:00 | | |\n15:00–16:00 | | |\nTotal sewn so far: 400\nWork continues. No stoppage is reported.",
+      "context_snapshot": {
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "po_details_api": {
+          "po_id": "PO-SYN-101",
+          "total_required": 1000,
+          "due_at": "2026-11-03T17:00:00+05:30",
+          "source_id": "GOLD-01-PO"
+        },
+        "plan_api": {
+          "line": "S10",
+          "target_units_by_16:00": 520,
+          "source_id": "GOLD-01-PLAN",
+          "sewn_before_shift": 0,
+          "working_windows": [
+            {
+              "start": "2026-11-01T08:00:00+05:30",
+              "end": "2026-11-01T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-02T08:00:00+05:30",
+              "end": "2026-11-02T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-03T08:00:00+05:30",
+              "end": "2026-11-03T16:00:00+05:30"
+            }
+          ],
+          "schedule_basis": "Synthetic one 8-hour shift per day, same PO and line; no overtime assumed.",
+          "shift_end": "2026-11-01T16:00:00+05:30",
+          "shift_target_units": 520
+        },
+        "handoffs": {
+          "cutting": {
+            "source_id": "GOLD-01-CUTTING",
+            "status": "Issued pieces are recorded; no claim that all required material is available."
+          },
+          "finishing": {
+            "source_id": "GOLD-01-FINISHING",
+            "status": "No completion confirmation."
+          },
+          "qc": {
+            "source_id": "GOLD-01-QC",
+            "status": "Inspection completion is unknown."
+          }
+        },
+        "whatsapp_updates": []
+      },
+      "labels": {
+        "po_id": "PO-SYN-101",
+        "line": "S10",
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "event_state": "reported_partial",
+        "hourly_quantities": [
+          72,
+          70,
+          68,
+          65,
+          62,
+          63,
+          null,
+          null
+        ],
+        "total_reported_sewn": 400,
+        "expected_outcome": "clear",
+        "expected_delay_risk": "no",
+        "expected_route": "clear_result",
+        "expected_reason": "pace_meets_due",
+        "qc_completion": "unknown",
+        "evidence_ids": [
+          "GOLD-01-INPUT",
+          "GOLD-01-PO",
+          "GOLD-01-PLAN"
+        ],
+        "forbidden_claims": [
+          "Shipment is ready.",
+          "A planned date proves completed work.",
+          "Missing confirmation proves delay."
+        ],
+        "rationale": "400 reported sewn; 18 remaining planned work hours. Lowest observed pace is 62/hour, sufficient under the stated calendar. QC/shipment remain separate.",
+        "review_status": "pending_independent_review",
+        "known_implementation_gap": false
+      }
+    },
+    {
+      "case_id": "G02",
+      "title": "Zero-output hours are real",
+      "source_id": "GOLD-02-INPUT",
+      "source_kind": "text",
+      "language": "Tamil + English",
+      "source_asset": null,
+      "reference_text": "PO-SYN-102, line S10. Date: 2026-11-01. As of 14:00 IST.\nHour | Pieces sewn | Running total | Remarks\n08:00–09:00 | 75 | 75 |\n09:00–10:00 | 73 | 148 |\n10:00–11:00 | 40 | 188 |\n11:00–12:00 | 0 | 188 |\n12:00–13:00 | 0 | 188 |\n13:00–14:00 | 0 | 188 |\n14:00–15:00 | | |\n15:00–16:00 | | |\nTotal sewn so far: 188\nஇயந்திரம் நின்றது. மீண்டும் தொடங்கும் நேரம் தெரியவில்லை.",
+      "context_snapshot": {
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "po_details_api": {
+          "po_id": "PO-SYN-102",
+          "total_required": 1000,
+          "due_at": "2026-11-03T17:00:00+05:30",
+          "source_id": "GOLD-02-PO"
+        },
+        "plan_api": {
+          "line": "S10",
+          "target_units_by_16:00": 520,
+          "source_id": "GOLD-02-PLAN",
+          "sewn_before_shift": 0,
+          "working_windows": [
+            {
+              "start": "2026-11-01T08:00:00+05:30",
+              "end": "2026-11-01T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-02T08:00:00+05:30",
+              "end": "2026-11-02T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-03T08:00:00+05:30",
+              "end": "2026-11-03T16:00:00+05:30"
+            }
+          ],
+          "schedule_basis": "Synthetic one 8-hour shift per day, same PO and line; no overtime assumed.",
+          "shift_end": "2026-11-01T16:00:00+05:30",
+          "shift_target_units": 520
+        },
+        "handoffs": {
+          "cutting": {
+            "source_id": "GOLD-02-CUTTING",
+            "status": "Issued pieces are recorded; no claim that all required material is available."
+          },
+          "finishing": {
+            "source_id": "GOLD-02-FINISHING",
+            "status": "No completion confirmation."
+          },
+          "qc": {
+            "source_id": "GOLD-02-QC",
+            "status": "Inspection completion is unknown."
+          }
+        },
+        "whatsapp_updates": []
+      },
+      "labels": {
+        "po_id": "PO-SYN-102",
+        "line": "S10",
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "event_state": "reported_partial",
+        "hourly_quantities": [
+          75,
+          73,
+          40,
+          0,
+          0,
+          0,
+          null,
+          null
+        ],
+        "total_reported_sewn": 188,
+        "expected_outcome": "clear",
+        "expected_delay_risk": "yes",
+        "expected_route": "clear_result",
+        "expected_reason": "observed_pace_shortfall",
+        "qc_completion": "unknown",
+        "evidence_ids": [
+          "GOLD-02-INPUT",
+          "GOLD-02-PO",
+          "GOLD-02-PLAN"
+        ],
+        "forbidden_claims": [
+          "Shipment is ready.",
+          "A planned date proves completed work.",
+          "Missing confirmation proves delay."
+        ],
+        "rationale": "188 reported sewn. Recorded zero hours make lowest pace zero; average projection is 752 against 1,000. This is conditional sewing risk, not a shipment-delay estimate. Tamil wording needs native review.",
+        "review_status": "pending_independent_review",
+        "known_implementation_gap": false
+      }
+    },
+    {
+      "case_id": "G03",
+      "title": "First lot and future work",
+      "source_id": "GOLD-03-INPUT",
+      "source_kind": "text",
+      "language": "English",
+      "source_asset": null,
+      "reference_text": "PO-SYN-103, line S10. Date: 2026-11-01. As of 14:00 IST.\nThe first lot is 18,000 pieces. We plan to cut it tomorrow; the remaining 24,000 will follow.",
+      "context_snapshot": {
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "po_details_api": {
+          "po_id": "PO-SYN-103",
+          "total_required": 1000,
+          "due_at": "2026-11-03T17:00:00+05:30",
+          "source_id": "GOLD-03-PO"
+        },
+        "plan_api": {
+          "line": "S10",
+          "target_units_by_16:00": 520,
+          "source_id": "GOLD-03-PLAN",
+          "sewn_before_shift": 0,
+          "working_windows": [
+            {
+              "start": "2026-11-01T08:00:00+05:30",
+              "end": "2026-11-01T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-02T08:00:00+05:30",
+              "end": "2026-11-02T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-03T08:00:00+05:30",
+              "end": "2026-11-03T16:00:00+05:30"
+            }
+          ],
+          "schedule_basis": "Synthetic one 8-hour shift per day, same PO and line; no overtime assumed.",
+          "shift_end": "2026-11-01T16:00:00+05:30",
+          "shift_target_units": 520
+        },
+        "handoffs": {
+          "cutting": {
+            "source_id": "GOLD-03-CUTTING",
+            "status": "Issued pieces are recorded; no claim that all required material is available."
+          },
+          "finishing": {
+            "source_id": "GOLD-03-FINISHING",
+            "status": "No completion confirmation."
+          },
+          "qc": {
+            "source_id": "GOLD-03-QC",
+            "status": "Inspection completion is unknown."
+          }
+        },
+        "whatsapp_updates": []
+      },
+      "labels": {
+        "po_id": "PO-SYN-103",
+        "line": "S10",
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "event_state": "future_plan",
+        "hourly_quantities": null,
+        "total_reported_sewn": null,
+        "expected_outcome": "unclear",
+        "expected_delay_risk": null,
+        "expected_route": "supervisor_hold",
+        "expected_reason": "no_confirmed_progress",
+        "qc_completion": "unknown",
+        "evidence_ids": [
+          "GOLD-03-INPUT",
+          "GOLD-03-PO",
+          "GOLD-03-PLAN"
+        ],
+        "forbidden_claims": [
+          "Shipment is ready.",
+          "A planned date proves completed work.",
+          "Missing confirmation proves delay."
+        ],
+        "rationale": "18,000 describes a lot and cutting is future work. Neither 18,000 nor 42,000 is confirmed completed cutting. No sewing forecast is supported.",
+        "review_status": "pending_independent_review",
+        "known_implementation_gap": false
+      }
+    },
+    {
+      "case_id": "G04",
+      "title": "Valid partial output",
+      "source_id": "GOLD-04-INPUT",
+      "source_kind": "text",
+      "language": "English",
+      "source_asset": null,
+      "reference_text": "PO-SYN-104, line S10. Date: 2026-11-01. As of 14:00 IST.\nHour | Pieces sewn | Running total | Remarks\n08:00–09:00 | 40 | 40 |\n09:00–10:00 | 40 | 80 |\n10:00–11:00 | 40 | 120 |\n11:00–12:00 | 40 | 160 |\n12:00–13:00 | 20 | 180 |\n13:00–14:00 | 20 | 200 |\n14:00–15:00 | | |\n15:00–16:00 | | |\nTotal sewn so far: 200\nWe have sewn 200 pieces. The order is not complete. Work continues.",
+      "context_snapshot": {
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "po_details_api": {
+          "po_id": "PO-SYN-104",
+          "total_required": 1000,
+          "due_at": "2026-11-03T17:00:00+05:30",
+          "source_id": "GOLD-04-PO"
+        },
+        "plan_api": {
+          "line": "S10",
+          "target_units_by_16:00": 520,
+          "source_id": "GOLD-04-PLAN",
+          "sewn_before_shift": 0,
+          "working_windows": [
+            {
+              "start": "2026-11-01T08:00:00+05:30",
+              "end": "2026-11-01T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-02T08:00:00+05:30",
+              "end": "2026-11-02T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-03T08:00:00+05:30",
+              "end": "2026-11-03T16:00:00+05:30"
+            }
+          ],
+          "schedule_basis": "Synthetic one 8-hour shift per day, same PO and line; no overtime assumed.",
+          "shift_end": "2026-11-01T16:00:00+05:30",
+          "shift_target_units": 520
+        },
+        "handoffs": {
+          "cutting": {
+            "source_id": "GOLD-04-CUTTING",
+            "status": "Issued pieces are recorded; no claim that all required material is available."
+          },
+          "finishing": {
+            "source_id": "GOLD-04-FINISHING",
+            "status": "No completion confirmation."
+          },
+          "qc": {
+            "source_id": "GOLD-04-QC",
+            "status": "Inspection completion is unknown."
+          }
+        },
+        "whatsapp_updates": []
+      },
+      "labels": {
+        "po_id": "PO-SYN-104",
+        "line": "S10",
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "event_state": "reported_partial",
+        "hourly_quantities": [
+          40,
+          40,
+          40,
+          40,
+          20,
+          20,
+          null,
+          null
+        ],
+        "total_reported_sewn": 200,
+        "expected_outcome": "clear",
+        "expected_delay_risk": "yes",
+        "expected_route": "clear_result",
+        "expected_reason": "observed_pace_shortfall",
+        "qc_completion": "unknown",
+        "evidence_ids": [
+          "GOLD-04-INPUT",
+          "GOLD-04-PO",
+          "GOLD-04-PLAN"
+        ],
+        "forbidden_claims": [
+          "Shipment is ready.",
+          "A planned date proves completed work.",
+          "Missing confirmation proves delay."
+        ],
+        "rationale": "200 is valid reported partial output. At the slowest recorded 20/hour, projection is 560 before due, below 1,000.",
+        "review_status": "pending_independent_review",
+        "known_implementation_gap": false
+      }
+    },
+    {
+      "case_id": "G05",
+      "title": "Explicit reported sewing completion",
+      "source_id": "GOLD-05-INPUT",
+      "source_kind": "text",
+      "language": "English",
+      "source_asset": null,
+      "reference_text": "PO-SYN-105, line S10. Date: 2026-11-01. As of 14:00 IST.\nHour | Pieces sewn | Running total | Remarks\n08:00–09:00 | 200 | 200 |\n09:00–10:00 | 200 | 400 |\n10:00–11:00 | 200 | 600 |\n11:00–12:00 | 200 | 800 |\n12:00–13:00 | 100 | 900 |\n13:00–14:00 | 100 | 1000 |\n14:00–15:00 | | |\n15:00–16:00 | | |\nTotal sewn so far: 1000\nAll 1,000 pieces are sewn. Finishing and QC are not yet confirmed.",
+      "context_snapshot": {
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "po_details_api": {
+          "po_id": "PO-SYN-105",
+          "total_required": 1000,
+          "due_at": "2026-11-03T17:00:00+05:30",
+          "source_id": "GOLD-05-PO"
+        },
+        "plan_api": {
+          "line": "S10",
+          "target_units_by_16:00": 520,
+          "source_id": "GOLD-05-PLAN",
+          "sewn_before_shift": 0,
+          "working_windows": [
+            {
+              "start": "2026-11-01T08:00:00+05:30",
+              "end": "2026-11-01T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-02T08:00:00+05:30",
+              "end": "2026-11-02T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-03T08:00:00+05:30",
+              "end": "2026-11-03T16:00:00+05:30"
+            }
+          ],
+          "schedule_basis": "Synthetic one 8-hour shift per day, same PO and line; no overtime assumed.",
+          "shift_end": "2026-11-01T16:00:00+05:30",
+          "shift_target_units": 520
+        },
+        "handoffs": {
+          "cutting": {
+            "source_id": "GOLD-05-CUTTING",
+            "status": "Issued pieces are recorded; no claim that all required material is available."
+          },
+          "finishing": {
+            "source_id": "GOLD-05-FINISHING",
+            "status": "No completion confirmation."
+          },
+          "qc": {
+            "source_id": "GOLD-05-QC",
+            "status": "Inspection completion is unknown."
+          }
+        },
+        "whatsapp_updates": []
+      },
+      "labels": {
+        "po_id": "PO-SYN-105",
+        "line": "S10",
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "event_state": "reported_complete",
+        "hourly_quantities": [
+          200,
+          200,
+          200,
+          200,
+          100,
+          100,
+          null,
+          null
+        ],
+        "total_reported_sewn": 1000,
+        "expected_outcome": "clear",
+        "expected_delay_risk": "no",
+        "expected_route": "clear_result",
+        "expected_reason": "sewing_requirement_met",
+        "qc_completion": "unknown",
+        "evidence_ids": [
+          "GOLD-05-INPUT",
+          "GOLD-05-PO",
+          "GOLD-05-PLAN"
+        ],
+        "forbidden_claims": [
+          "Shipment is ready.",
+          "A planned date proves completed work.",
+          "Missing confirmation proves delay."
+        ],
+        "rationale": "The text reports sewing completion of 1,000. Do not convert this to verified QC, finishing or shipment readiness.",
+        "review_status": "pending_independent_review",
+        "known_implementation_gap": false
+      }
+    },
+    {
+      "case_id": "G06",
+      "title": "Same-day deadline is still ahead",
+      "source_id": "GOLD-06-INPUT",
+      "source_kind": "text",
+      "language": "English",
+      "source_asset": null,
+      "reference_text": "PO-SYN-106, line S10. Date: 2026-11-01. As of 14:00 IST.\nHour | Pieces sewn | Running total | Remarks\n08:00–09:00 | 72 | 72 |\n09:00–10:00 | 70 | 142 |\n10:00–11:00 | 68 | 210 |\n11:00–12:00 | 65 | 275 |\n12:00–13:00 | 62 | 337 |\n13:00–14:00 | 63 | 400 |\n14:00–15:00 | | |\n15:00–16:00 | | |\nTotal sewn so far: 400\nTrims are planned for today. No late delivery is confirmed.",
+      "context_snapshot": {
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "po_details_api": {
+          "po_id": "PO-SYN-106",
+          "total_required": 500,
+          "due_at": "2026-11-01T16:00:00+05:30",
+          "source_id": "GOLD-06-PO"
+        },
+        "plan_api": {
+          "line": "S10",
+          "target_units_by_16:00": 520,
+          "source_id": "GOLD-06-PLAN",
+          "sewn_before_shift": 0,
+          "working_windows": [
+            {
+              "start": "2026-11-01T08:00:00+05:30",
+              "end": "2026-11-01T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-02T08:00:00+05:30",
+              "end": "2026-11-02T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-03T08:00:00+05:30",
+              "end": "2026-11-03T16:00:00+05:30"
+            }
+          ],
+          "schedule_basis": "Synthetic one 8-hour shift per day, same PO and line; no overtime assumed.",
+          "shift_end": "2026-11-01T16:00:00+05:30",
+          "shift_target_units": 520
+        },
+        "handoffs": {
+          "cutting": {
+            "source_id": "GOLD-06-CUTTING",
+            "status": "Issued pieces are recorded; no claim that all required material is available."
+          },
+          "finishing": {
+            "source_id": "GOLD-06-FINISHING",
+            "status": "No completion confirmation."
+          },
+          "qc": {
+            "source_id": "GOLD-06-QC",
+            "status": "Inspection completion is unknown."
+          }
+        },
+        "whatsapp_updates": []
+      },
+      "labels": {
+        "po_id": "PO-SYN-106",
+        "line": "S10",
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "event_state": "reported_partial",
+        "hourly_quantities": [
+          72,
+          70,
+          68,
+          65,
+          62,
+          63,
+          null,
+          null
+        ],
+        "total_reported_sewn": 400,
+        "expected_outcome": "clear",
+        "expected_delay_risk": "no",
+        "expected_route": "clear_result",
+        "expected_reason": "pace_meets_same_day_due",
+        "qc_completion": "unknown",
+        "evidence_ids": [
+          "GOLD-06-INPUT",
+          "GOLD-06-PO",
+          "GOLD-06-PLAN"
+        ],
+        "forbidden_claims": [
+          "Shipment is ready.",
+          "A planned date proves completed work.",
+          "Missing confirmation proves delay."
+        ],
+        "rationale": "500 are required by 16:00, with 400 reported at 14:00. At 62/hour two hours yield 524. A same-day trims plan does not prove a two-day delay.",
+        "review_status": "pending_independent_review",
+        "known_implementation_gap": false
+      }
+    },
+    {
+      "case_id": "G07",
+      "title": "Approval is a future plan",
+      "source_id": "GOLD-07-INPUT",
+      "source_kind": "text",
+      "language": "English",
+      "source_asset": null,
+      "reference_text": "PO-SYN-107, line S10. Date: 2026-11-01. As of 14:00 IST.\nApproval is planned for tomorrow. No approval decision has been received.",
+      "context_snapshot": {
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "po_details_api": {
+          "po_id": "PO-SYN-107",
+          "total_required": 1000,
+          "due_at": "2026-11-03T17:00:00+05:30",
+          "source_id": "GOLD-07-PO"
+        },
+        "plan_api": {
+          "line": "S10",
+          "target_units_by_16:00": 520,
+          "source_id": "GOLD-07-PLAN",
+          "sewn_before_shift": 0,
+          "working_windows": [
+            {
+              "start": "2026-11-01T08:00:00+05:30",
+              "end": "2026-11-01T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-02T08:00:00+05:30",
+              "end": "2026-11-02T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-03T08:00:00+05:30",
+              "end": "2026-11-03T16:00:00+05:30"
+            }
+          ],
+          "schedule_basis": "Synthetic one 8-hour shift per day, same PO and line; no overtime assumed.",
+          "shift_end": "2026-11-01T16:00:00+05:30",
+          "shift_target_units": 520
+        },
+        "handoffs": {
+          "cutting": {
+            "source_id": "GOLD-07-CUTTING",
+            "status": "Issued pieces are recorded; no claim that all required material is available."
+          },
+          "finishing": {
+            "source_id": "GOLD-07-FINISHING",
+            "status": "No completion confirmation."
+          },
+          "qc": {
+            "source_id": "GOLD-07-QC",
+            "status": "Inspection completion is unknown."
+          }
+        },
+        "whatsapp_updates": []
+      },
+      "labels": {
+        "po_id": "PO-SYN-107",
+        "line": "S10",
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "event_state": "future_plan",
+        "hourly_quantities": null,
+        "total_reported_sewn": null,
+        "expected_outcome": "unclear",
+        "expected_delay_risk": null,
+        "expected_route": "supervisor_hold",
+        "expected_reason": "approval_unknown",
+        "qc_completion": "unknown",
+        "evidence_ids": [
+          "GOLD-07-INPUT",
+          "GOLD-07-PO",
+          "GOLD-07-PLAN"
+        ],
+        "forbidden_claims": [
+          "Shipment is ready.",
+          "A planned date proves completed work.",
+          "Missing confirmation proves delay."
+        ],
+        "rationale": "A future approval plan establishes neither actual approval nor late approval. Missing confirmation remains unknown.",
+        "review_status": "pending_independent_review",
+        "known_implementation_gap": false
+      }
+    },
+    {
+      "case_id": "G08",
+      "title": "Conflicting same-scope updates",
+      "source_id": "GOLD-08-INPUT",
+      "source_kind": "text",
+      "language": "English",
+      "source_asset": null,
+      "reference_text": "PO-SYN-108, line S10. Date: 2026-11-01. As of 14:00 IST.\nHour | Pieces sewn | Running total | Remarks\n08:00–09:00 | 72 | 72 |\n09:00–10:00 | 70 | 142 |\n10:00–11:00 | 68 | 210 |\n11:00–12:00 | 65 | 275 |\n12:00–13:00 | 62 | 337 |\n13:00–14:00 | 63 | 400 |\n14:00–15:00 | | |\n15:00–16:00 | | |\nTotal sewn so far: 400\nThis sheet reports cumulative sewing output of 400 at 14:00.",
+      "context_snapshot": {
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "po_details_api": {
+          "po_id": "PO-SYN-108",
+          "total_required": 1000,
+          "due_at": "2026-11-03T17:00:00+05:30",
+          "source_id": "GOLD-08-PO"
+        },
+        "plan_api": {
+          "line": "S10",
+          "target_units_by_16:00": 520,
+          "source_id": "GOLD-08-PLAN",
+          "sewn_before_shift": 0,
+          "working_windows": [
+            {
+              "start": "2026-11-01T08:00:00+05:30",
+              "end": "2026-11-01T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-02T08:00:00+05:30",
+              "end": "2026-11-02T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-03T08:00:00+05:30",
+              "end": "2026-11-03T16:00:00+05:30"
+            }
+          ],
+          "schedule_basis": "Synthetic one 8-hour shift per day, same PO and line; no overtime assumed.",
+          "shift_end": "2026-11-01T16:00:00+05:30",
+          "shift_target_units": 520
+        },
+        "handoffs": {
+          "cutting": {
+            "source_id": "GOLD-08-CUTTING",
+            "status": "Issued pieces are recorded; no claim that all required material is available."
+          },
+          "finishing": {
+            "source_id": "GOLD-08-FINISHING",
+            "status": "No completion confirmation."
+          },
+          "qc": {
+            "source_id": "GOLD-08-QC",
+            "status": "Inspection completion is unknown."
+          }
+        },
+        "whatsapp_updates": [
+          {
+            "source_id": "GOLD-08-PRIOR",
+            "text": "PO-SYN-108 line S10: cumulative sewing output for this shift at 14:00 is 300, not 400."
+          }
+        ]
+      },
+      "labels": {
+        "po_id": "PO-SYN-108",
+        "line": "S10",
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "event_state": "reported_partial",
+        "hourly_quantities": [
+          72,
+          70,
+          68,
+          65,
+          62,
+          63,
+          null,
+          null
+        ],
+        "total_reported_sewn": 400,
+        "expected_outcome": "unclear",
+        "expected_delay_risk": null,
+        "expected_route": "supervisor_hold",
+        "expected_reason": "same_scope_count_conflict",
+        "qc_completion": "unknown",
+        "evidence_ids": [
+          "GOLD-08-INPUT",
+          "GOLD-08-PO",
+          "GOLD-08-PLAN",
+          "GOLD-08-PRIOR"
+        ],
+        "forbidden_claims": [
+          "Shipment is ready.",
+          "A planned date proves completed work.",
+          "Missing confirmation proves delay."
+        ],
+        "rationale": "The same PO, line, shift, metric and timestamp have incompatible cumulative totals of 300 and 400. Hold the conclusion until the conflict is resolved.",
+        "review_status": "pending_independent_review",
+        "known_implementation_gap": true
+      }
+    },
+    {
+      "case_id": "G09",
+      "title": "Unreadable quantity in OCR text",
+      "source_id": "GOLD-09-INPUT",
+      "source_kind": "OCR transcript",
+      "language": "English",
+      "source_asset": null,
+      "reference_text": "PO-SYN-109, line S10. Date: 2026-11-01. As of 14:00 IST.\n08:00–09:00: [quantity unreadable]. QC handwriting is blurry. Do not guess.",
+      "context_snapshot": {
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "po_details_api": {
+          "po_id": "PO-SYN-109",
+          "total_required": 1000,
+          "due_at": "2026-11-03T17:00:00+05:30",
+          "source_id": "GOLD-09-PO"
+        },
+        "plan_api": {
+          "line": "S10",
+          "target_units_by_16:00": 520,
+          "source_id": "GOLD-09-PLAN",
+          "sewn_before_shift": 0,
+          "working_windows": [
+            {
+              "start": "2026-11-01T08:00:00+05:30",
+              "end": "2026-11-01T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-02T08:00:00+05:30",
+              "end": "2026-11-02T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-03T08:00:00+05:30",
+              "end": "2026-11-03T16:00:00+05:30"
+            }
+          ],
+          "schedule_basis": "Synthetic one 8-hour shift per day, same PO and line; no overtime assumed.",
+          "shift_end": "2026-11-01T16:00:00+05:30",
+          "shift_target_units": 520
+        },
+        "handoffs": {
+          "cutting": {
+            "source_id": "GOLD-09-CUTTING",
+            "status": "Issued pieces are recorded; no claim that all required material is available."
+          },
+          "finishing": {
+            "source_id": "GOLD-09-FINISHING",
+            "status": "No completion confirmation."
+          },
+          "qc": {
+            "source_id": "GOLD-09-QC",
+            "status": "Inspection completion is unknown."
+          }
+        },
+        "whatsapp_updates": []
+      },
+      "labels": {
+        "po_id": "PO-SYN-109",
+        "line": "S10",
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "event_state": "unclear",
+        "hourly_quantities": null,
+        "total_reported_sewn": null,
+        "expected_outcome": "unclear",
+        "expected_delay_risk": null,
+        "expected_route": "supervisor_hold",
+        "expected_reason": "unreadable_critical_field",
+        "qc_completion": "unknown",
+        "evidence_ids": [
+          "GOLD-09-INPUT",
+          "GOLD-09-PO",
+          "GOLD-09-PLAN"
+        ],
+        "forbidden_claims": [
+          "Shipment is ready.",
+          "A planned date proves completed work.",
+          "Missing confirmation proves delay."
+        ],
+        "rationale": "The reference transcript itself marks an unreadable quantity. No image asset exists in this case, so this checks abstention from a transcript, not OCR accuracy.",
+        "review_status": "pending_independent_review",
+        "known_implementation_gap": false
+      }
+    },
+    {
+      "case_id": "G10",
+      "title": "A new stoppage invalidates continued pace",
+      "source_id": "GOLD-10-INPUT",
+      "source_kind": "text",
+      "language": "English",
+      "source_asset": null,
+      "reference_text": "PO-SYN-110, line S10. Date: 2026-11-01. As of 14:00 IST.\nHour | Pieces sewn | Running total | Remarks\n08:00–09:00 | 72 | 72 |\n09:00–10:00 | 70 | 142 |\n10:00–11:00 | 68 | 210 |\n11:00–12:00 | 65 | 275 |\n12:00–13:00 | 62 | 337 |\n13:00–14:00 | 63 | 400 |\n14:00–15:00 | | |\n15:00–16:00 | | |\nTotal sewn so far: 400\nMachine stopped at 14:00. No replacement is available before the PO due date.",
+      "context_snapshot": {
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "po_details_api": {
+          "po_id": "PO-SYN-110",
+          "total_required": 1000,
+          "due_at": "2026-11-03T17:00:00+05:30",
+          "source_id": "GOLD-10-PO"
+        },
+        "plan_api": {
+          "line": "S10",
+          "target_units_by_16:00": 520,
+          "source_id": "GOLD-10-PLAN",
+          "sewn_before_shift": 0,
+          "working_windows": [
+            {
+              "start": "2026-11-01T08:00:00+05:30",
+              "end": "2026-11-01T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-02T08:00:00+05:30",
+              "end": "2026-11-02T16:00:00+05:30"
+            },
+            {
+              "start": "2026-11-03T08:00:00+05:30",
+              "end": "2026-11-03T16:00:00+05:30"
+            }
+          ],
+          "schedule_basis": "Synthetic one 8-hour shift per day, same PO and line; no overtime assumed.",
+          "shift_end": "2026-11-01T16:00:00+05:30",
+          "shift_target_units": 520
+        },
+        "handoffs": {
+          "cutting": {
+            "source_id": "GOLD-10-CUTTING",
+            "status": "Issued pieces are recorded; no claim that all required material is available."
+          },
+          "finishing": {
+            "source_id": "GOLD-10-FINISHING",
+            "status": "No completion confirmation."
+          },
+          "qc": {
+            "source_id": "GOLD-10-QC",
+            "status": "Inspection completion is unknown."
+          }
+        },
+        "whatsapp_updates": []
+      },
+      "labels": {
+        "po_id": "PO-SYN-110",
+        "line": "S10",
+        "as_of": "2026-11-01T14:00:00+05:30",
+        "event_state": "reported_partial",
+        "hourly_quantities": [
+          72,
+          70,
+          68,
+          65,
+          62,
+          63,
+          null,
+          null
+        ],
+        "total_reported_sewn": 400,
+        "expected_outcome": "unclear",
+        "expected_delay_risk": null,
+        "expected_route": "supervisor_hold",
+        "expected_reason": "forecast_assumption_conflict",
+        "qc_completion": "unknown",
+        "evidence_ids": [
+          "GOLD-10-INPUT",
+          "GOLD-10-PO",
+          "GOLD-10-PLAN"
+        ],
+        "forbidden_claims": [
+          "Shipment is ready.",
+          "A planned date proves completed work.",
+          "Missing confirmation proves delay."
+        ],
+        "rationale": "The numeric pace scenario can still be displayed conditionally, but explicit unavailability contradicts continued operation. Hold the operational conclusion; do not show on track.",
+        "review_status": "pending_independent_review",
+        "known_implementation_gap": true
+      }
+    }
+  ]
+}

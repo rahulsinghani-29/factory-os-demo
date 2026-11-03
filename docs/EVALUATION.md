@@ -21,4 +21,6 @@ Report identifier exact match, row-count accuracy, character error rate, remark 
 
 The 15-second warm OCR target has not been met consistently. Local API charge is zero; hardware cost is unmeasured. A reviewed media golden set and automatic sampled evaluator are not implemented. The proposed async policy is to score 10% of live runs plus every unclear/failed run, and to run the fixed golden set after every relevant change.
 
-The 17 shared offline regression tests are useful checks, not a production OCR benchmark.
+The 23 shared offline regression tests are useful checks, not a production OCR benchmark.
+
+See [the ten authored reference cases](../data/golden_cases.json) and [the workflow/reference notes](workflow-and-reference-cases.md). All references are pending independent review. G08 and G10 describe known gaps. No model score is implied by listing expected labels.

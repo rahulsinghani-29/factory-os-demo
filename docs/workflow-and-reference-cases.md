@@ -1,0 +1,11 @@
+# Typed workflow and reference cases
+
+The Workflow design chart is generated from the executable LangGraph, rather than a separate hand-drawn process. Each step is labelled CODE, IF / ELSE, LLM CALL, or TOOL CALL. Photo OCR and text preservation have separate routes. Audio/video ends with an unsupported-input report. Failures route through a saved unclear result and then END.
+
+PO details, handoff/QC status, the production plan and preceding messages are separate read-only tool adapters. They read the supplied synthetic snapshots. They do not call live factory APIs. The incoming event represents one WhatsApp-style upload/pasted message; the live connector is not configured. A supervisor hold does not create or send a real task.
+
+The Eval criteria page shows ten authored reference cases, with full JSON/CSV downloads. Labels include source provenance, PO, line, as-of time, work state, incremental counts, reported total, expected risk, expected route/reason, QC status, evidence IDs, forbidden claims and reviewer status. The exact input and all source snapshots are kept with each case. Label answers never enter the inference prompt.
+
+All ten cases are synthetic and pending independent review. They include valid progress/completion and necessary abstention, not only holds. They are text/prepared-transcript cases, not a photo/audio/video accuracy benchmark. G08 and G10 document known same-scope conflict and stopped-machine reasoning gaps. They are expected reference labels, not passing model results. The rubric remains available as a collapsed judge-evaluation section. A reviewed media benchmark, automatic judge scoring and asynchronous sampling are not implemented.
+
+Validation for this change: 89 offline tests in the full workspace; 23 standalone tests in the public subset. Tests cover graph reachability/END paths, unsupported media without model calls, failed/empty OCR, separate fixture-reader traces, label exclusion from prompts, read-only lookup identity checks and arithmetic consistency of authored examples. Streamlit AppTest checks the updated pages. One actual local Qwen 2.5 7B synthetic text run completed and returned clear/no sewing risk. That is a scoped text smoke test, not a new OCR benchmark or a full operational verification.

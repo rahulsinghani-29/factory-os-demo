@@ -33,7 +33,7 @@ GitHub hosts the code and documentation. It does not host the running Streamlit 
 | Forecast | Python calculates slowest-recorded, average and fastest-recorded pace using explicit shift calendars |
 | Report | One short conclusion, with date/count/source checks and details folded away |
 | Langfuse | Optional root-run and model-generation traces for synthetic inputs, including prompts, responses and available usage; local JSON traces are always retained |
-| Evaluation | A weighted 100-point rubric and 17 shared offline regression tests |
+| Evaluation | A weighted 100-point rubric and 23 shared offline regression tests |
 
 There are four navigation sections: **Workflow design**, **Input**, **Output + trace**, and **Eval criteria**. The navigation includes spacing below Streamlit's fixed header so its labels remain visible.
 
@@ -71,7 +71,7 @@ The three scenarios use the lowest, mean, and highest observed hourly rates. Rea
 
 ## What was actually verified
 
-- **17 shared regression tests pass**, covering source quotes, model failure handling, blank versus zero hours, calendar math, domain refusal, and the single-report date-conflict case. The full local workspace also passed 83 tests; historical source logs and their dependent tests are not included in this public copy.
+- **23 shared regression tests pass**, covering source quotes, model failure handling, blank versus zero hours, calendar math, domain refusal, and the single-report date-conflict case. The full local workspace also passed 89 tests; historical source logs and their dependent tests are not included in this public copy.
 - Real local OCR and Qwen calls completed on synthetic camera-style images. Counts were usable on tested sheets, but dates, Tamil text and blank cells were sometimes misread.
 - Real local Qwen calls completed on custom text. Valid arithmetic can produce a scoped sewing-risk decision even when restart time remains unknown.
 - Streamlit smoke checks exercised custom input, photo mode, automatic routing, the four-page navigation, and one consistent report. This is not a claim of complete browser or production testing.
@@ -120,3 +120,5 @@ The offline suite uses mocks and recorded synthetic failures. It does not downlo
 - [`tests`](tests): offline regression coverage.
 
 The current web application is the supported entry point. Some reusable source modules retain earlier prototype functions, but historical datasets and CLI records are not published.
+
+The [typed workflow and ten draft reference cases](docs/workflow-and-reference-cases.md) expose separate fixture-reader steps and labelled END paths. The Eval criteria page shows the actual reference rows and their label definitions. These synthetic references await independent review; known failures are identified rather than presented as passing evaluations.

@@ -54,8 +54,8 @@ class LiveWorkflowTests(unittest.TestCase):
         with patch.object(live,'ROOT',pathlib.Path(self.tmp.name)), patch.object(live,'call_ollama_json',side_effect=RuntimeError('offline')):
             result=live.run_live('Machine stopped.',None,self.context)
         self.assertEqual(result['status'],'failed_closed')
-        self.assertEqual(result['trace'][-1]['node'],'qwen_inference')
-        self.assertEqual(result['trace'][-1]['status'],'failed')
+        self.assertEqual([row['node'] for row in result['trace'] if row['status']=='failed'], ['qwen_inference'])
+        self.assertEqual(result['trace'][-1]['node'], 'prepare_report')
         self.assertFalse(result['outbox_written'])
 
     def test_unrelated_programming_request_never_reaches_the_model(self):

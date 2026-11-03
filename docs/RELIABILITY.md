@@ -8,7 +8,7 @@ This public copy contains application code, generated synthetic S10 sheets, inve
 - One on-track image produced 400 reported pieces. The lowest observed rate was 62 pieces/hour, with 18 planned work hours available. The numerical forecast met the 1,000-piece requirement, but OCR misread the document year. The report therefore required the date to be checked.
 - A stopped-machine example contained 188 pieces over six observed hours. Its average-rate projection was 752 pieces by the due date, indicating risk against 1,000 required. Future rows were excluded even when OCR inserted zeros into blank cells.
 - Real Qwen text runs completed. Unknown restart time no longer hides a valid conditional rate calculation. This does not confirm a restart, QC clearance or shipment ETA.
-- The full local workspace passed 83 offline tests. This public subset has 17 standalone tests; historical tests depending on withheld source logs are excluded.
+- The full local workspace passed 89 offline tests. This public subset has 23 standalone tests; historical tests depending on withheld source logs are excluded.
 
 These are observed development results, not a production accuracy benchmark. Raw logs remain local rather than being published as potentially sensitive data. Public tests use invented values and mocked clients to reproduce the relevant classes of failure.
 

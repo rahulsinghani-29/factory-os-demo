@@ -9,7 +9,14 @@ import streamlit as st
 
 ROOT = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / 'src'))
+# An existing Streamlit process may retain modules imported before a source upgrade.
+import importlib
+import live_workflow
+if getattr(live_workflow, 'WORKFLOW_VERSION', None) != 'typed-steps-v1':
+    importlib.reload(live_workflow)
 from live_workflow import run_live, build_live_graph, INFERENCE_PROMPT, OCR_PROMPT
+from workflow_view import workflow_dot
+from golden_data import load_golden, golden_rows, golden_csv, LABEL_FIELDS
 from report import build_report, short_time
 from media_adapters import preserve_upload
 from s10_demo import load_examples
@@ -35,24 +42,11 @@ def ist(value):
 
 def workflow():
     st.title('Workflow design')
-    st.write('WhatsApp supplies a continuous stream of messages. This demo tests one photo or text message per run. Each run combines that message with PO details, a dated plan, prior notes, and department handoffs.')
-    st.graphviz_chart('''digraph workflow {
-      rankdir=LR; bgcolor="white";
-      node [shape=box,style="rounded,filled",fillcolor="#f7fafc",color="#334155",fontcolor="#111827",fontname="Helvetica",fontsize=14,margin="0.20,0.15"];
-      edge [color="#475569",fontcolor="#111827",fontname="Helvetica",fontsize=12];
-      intake [label="WhatsApp stream\nPhoto · text · voice",fillcolor="#e8f1ff"];
-      event [label="Accept one message\nUpload photo or paste text"];
-      read [label="Read message\nPhoto → local vision OCR\nText → preserve original"];
-      context [label="Read source context\nPO + due date · plan\nHandoffs · prior WhatsApp notes"];
-      llm [label="Calculate lowest / average / best pace\nThen compare facts with Qwen",fillcolor="#fff4d6"];
-      validate [label="Check quotes and sources\nKeep uncertainty visible"];
-      clear [label="CLEAR\nDelay risk: yes or no",shape=ellipse,fillcolor="#e6f4ea"];
-      unclear [label="UNCLEAR\nAssign to line supervisor",shape=ellipse,fillcolor="#fff0eb"];
-      intake -> event -> read -> context -> llm -> validate;
-      validate -> clear [label="Supported"];
-      validate -> unclear [label="Missing / conflicting / failed"];
-    }''', width='stretch')
-    st.caption('The live WhatsApp connector and voice transcription are outside this demo. Photo OCR and Qwen calls run locally through Ollama. PO, plan, and handoff context can be edited below; no live factory APIs are connected.')
+    st.write('Each box is one configured step. Its label shows whether it is code, an if/else decision, a model call, or a tool call.')
+    st.caption('An incoming WhatsApp-style message is represented by an upload or pasted text. The live WhatsApp connector is not connected. Audio and video take the unsupported-input branch and end with an unclear report.')
+    st.graphviz_chart(workflow_dot(), width='stretch')
+    st.caption('PO details, handoff/QC status, the plan, and preceding messages have separate tool steps. These are read-only local fixture adapters for future APIs. No live factory API is called. Every route reaches END. Failures remain unclear.')
+    st.caption('A supervisor hold is a suggested follow-up. It does not send a task or record human approval. Graph detail does not establish model accuracy; known reasoning gaps remain.')
     with st.expander('Inspect the configured LangGraph and exact prompts'):
         st.code(build_live_graph().get_graph().draw_mermaid(), language='text')
         st.download_button('Download configured LangGraph', build_live_graph().get_graph().draw_mermaid(), 'factory-live-langgraph.mmd')
@@ -129,7 +123,7 @@ def output():
     provenance = 'Latest input run' if saved.get('origin')=='input_tab' else 'Saved local verification run · submit your own message in Input'
     st.caption(f"{provenance} · {saved['run_id']} · {ist(saved['timestamp'])}")
     st.subheader('Trace')
-    st.dataframe([{'Time':ist(row['timestamp']), 'Step':row['node'], 'Status':row['status'], 'Latency (s)':row['latency_seconds']} for row in saved.get('trace',[])], hide_index=True, width='stretch')
+    st.dataframe([{'Time':ist(row['timestamp']), 'Step':row['node'], 'Type':row.get('type','legacy trace'), 'Status':row['status'], 'Latency (s)':row['latency_seconds']} for row in saved.get('trace',[])], hide_index=True, width='stretch')
     result=saved.get('result') or {}
     pace=result.get('pace_forecast') or {}
     context=saved.get('context') or {}
@@ -178,22 +172,36 @@ def output():
 
 def evaluation():
     st.title('Eval criteria')
-    st.write('Score a sampled run against a reviewed reference: original image transcription, source facts, and correct risk decision. Each criterion scores 0, 1, or 2. Weighted score = sum(weight × score / 2).')
-    rows = [
-      ['Identifier and time accuracy',15,'Wrong PO, line, or event time','One missing identifier; explicitly unknown','Exact PO, line, date, hour and timezone'],
-      ['Counts, rates and completion math',20,'Wrong count, double count, or blank treated as zero','Counts correct but calendar or rate assumptions incomplete','Exact sum and rates; blanks excluded; available work hours and finish calculation correct'],
-      ['Tamil remarks and event meaning',20,'Misses stoppage or turns intent into completion','Core issue captured; uncertainty or nuance missing','Original remark preserved; translation and current/future meaning correct'],
-      ['Cross-source reconciliation',15,'Combines mismatched POs or ignores conflicts','Finds some differences but misses relevant sources','Links PO, plan, WhatsApp and handoffs; explains conflict/unknown'],
-      ['Risk decision and abstention',20,'False clear, unsupported delay, or invented numerical impact','Safe unclear but misses a decidable case','Correct risk yes/no or necessary abstention with missing facts'],
-      ['Evidence and explanation',10,'Fabricated quote/source or unsupported causal claim','Real sources but incomplete support or verbose output','Exact quotes and valid IDs; concise explanation; limits stated'],
-    ]
-    st.dataframe([dict(zip(['Criterion','Weight','0 · fail','1 · partial','2 · pass'],r)) for r in rows], hide_index=True, width='stretch')
-    st.markdown('**Release gate.** Require at least 90/100 and no critical error. A wrong PO/line, fabricated source, invented shipment delay, future plan treated as completion, false clear on conflicting facts, or unauthorized write fails the run regardless of score.')
-    st.markdown('**Dataset.** Version the source image, exact transcription, row quantities, remark translation, PO/plan/handoff snapshot, expected risk and rationale. Include clean print, handwriting, Tamil, mixed language, partial work, stopped machines, conflicting updates, missing dates and unreadable photos. Split by document template and PO so near-duplicate pages cannot leak into the test set.')
-    st.markdown('**Measure by group.** Report PO/line exact match, per-row quantity accuracy, character error rate, remark meaning accuracy, risk precision/recall, false-clear rate and abstention rate. Report both correct decisions and unnecessary abstentions; blocking every case must not pass.')
-    st.markdown('**Proposed targets, not measured results.** PO/line and quantity accuracy ≥98%; risk recall ≥95%; false-clear rate ≤1%; zero fabricated evidence or writes. Track OCR, LLM and total p50/p95 latency separately. OCR p95 target: 15 seconds on a warm local model; total latency has no validated target yet. Local API charge is zero; hardware cost is unmeasured.')
-    st.markdown('**Async operation.** Sample 10% of live runs plus every unclear/failed run for later supervisor scoring. Score the fixed golden set on every model, prompt, OCR or code change. Save rubric version, reviewer, model/prompt version and trace ID. Compare regression metrics before release; do not block routine live OCR for per-case approval.')
-    st.info('This is the rubric and release policy. A reviewed media golden set and automated sampling job are not configured. Existing regression tests are not an OCR benchmark.')
+    data = load_golden()
+    st.subheader('Golden dataset · 10 draft reference cases')
+    st.write('These synthetic examples show the expected answer before any model is scored. Clear cases and necessary holds are both included.')
+    st.warning('Draft references, pending independent review. These are not ten passing model runs or an OCR benchmark. G08 and G10 represent known validation gaps.')
+    st.dataframe(golden_rows(data), hide_index=True, width='stretch')
+    selected = st.selectbox('Inspect the exact input and its labels', [c['case_id']+' · '+c['title'] for c in data['cases']])
+    case = next(c for c in data['cases'] if selected.startswith(c['case_id']+' ·'))
+    with st.expander('Source text, PO facts and expected answer', expanded=False):
+        st.text(case['reference_text'])
+        st.json({'expected_labels': case['labels'], 'source_id': case['source_id'], 'source_kind': case['source_kind'],
+                 'context_snapshot': case['context_snapshot']})
+    left, right = st.columns(2)
+    left.download_button('Download all 10 reference cases · JSON', json.dumps(data,ensure_ascii=False,indent=2), 'golden-cases-v1.json', 'application/json')
+    right.download_button('Download the labelled table · CSV', golden_csv(data), 'golden-cases-v1.csv', 'text/csv')
+    with st.expander('What each label means'):
+        st.dataframe([{'Label': key, 'Meaning': value} for key,value in LABEL_FIELDS.items()], hide_index=True, width='stretch')
+    with st.expander('LLM-as-judge rubric and release gate'):
+        st.write('An independent reviewer must check the references first. A judge can then score meaning and explanation. Code checks identity, arithmetic, routes and forbidden writes. A judge score alone does not certify a run.')
+        rows = [
+          ['Identifier and time accuracy',15,'Wrong PO, line, or event time','One missing identifier; explicitly unknown','Exact PO, line, date, hour and timezone'],
+          ['Counts, rates and completion math',20,'Wrong count, double count, or blank treated as zero','Counts correct but calendar or rate assumptions incomplete','Exact sum and rates; blanks excluded; available work hours and finish calculation correct'],
+          ['Tamil remarks and event meaning',20,'Misses stoppage or turns intent into completion','Core issue captured; uncertainty or nuance missing','Original remark preserved; translation and current/future meaning correct'],
+          ['Cross-source reconciliation',15,'Combines mismatched POs or ignores conflicts','Finds some differences but misses relevant sources','Links PO, plan, WhatsApp and handoffs; explains conflict/unknown'],
+          ['Risk decision and abstention',20,'False clear, unsupported delay, or invented numerical impact','Safe unclear but misses a decidable case','Correct risk yes/no or necessary abstention with missing facts'],
+          ['Evidence and explanation',10,'Fabricated quote/source or unsupported causal claim','Real sources but incomplete support or verbose output','Exact quotes and valid IDs; concise explanation; limits stated'],
+        ]
+        st.dataframe([dict(zip(['Criterion','Weight','0 · fail','1 · partial','2 · pass'],r)) for r in rows], hide_index=True, width='stretch')
+        st.markdown('**Release gate.** Require at least 90/100 and no critical error. A wrong PO/line, fabricated source, invented shipment delay, future plan treated as completion, false clear on conflicting facts, or unauthorized write fails the run regardless of score.')
+    st.caption('Reference labels never enter the inference prompt. Text and prepared OCR transcripts test reasoning only. Media evaluation also needs original assets, reviewed transcription and translation, template/PO holdout splits, and measured p50/p95 latency.')
+    st.caption('Async sampling and automatic judge scores are not configured. Proposed policy: sample 10% of routine runs and all unclear/failed runs for later evaluation. Routine OCR does not pause for case-by-case approval.')
 
 
 pages=['Workflow design','Input','Output + trace','Eval criteria']
