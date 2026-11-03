@@ -16,9 +16,9 @@ if getattr(live_workflow, 'WORKFLOW_VERSION', None) != 'typed-steps-v2':
     importlib.reload(live_workflow)
 from live_workflow import run_live, build_live_graph, INFERENCE_PROMPT, OCR_PROMPT
 import workflow_view
-if getattr(workflow_view, "VIEW_VERSION", None) != "centered-v2":
+if getattr(workflow_view, "VIEW_VERSION", None) != "message-filters-v5":
     importlib.reload(workflow_view)
-from workflow_view import workflow_dot
+from workflow_view import workflow_design_dot
 from report import build_report, short_time
 from media_adapters import preserve_upload
 from s10_demo import load_examples
@@ -44,17 +44,23 @@ def ist(value):
 
 def workflow():
     st.title('Workflow design')
-    st.write('Each box is one configured step. Its label shows whether it is code, an if/else decision, a model call, or a tool call.')
+    st.write('Each box has one purpose. Labels distinguish code, if/else decisions, model calls and tool calls.')
+    st.info('Dashed boxes are proposed message filters. They are shown for design review and do not run in this prototype. The exact configured LangGraph is available below.')
     st.caption('An incoming WhatsApp-style message is represented by an upload or pasted text. The live WhatsApp connector is not connected. Audio and video take the unsupported-input branch and end with an unclear report.')
     _, graph_column, _ = st.columns([1, 8, 1])
     with graph_column:
-        st.graphviz_chart(workflow_dot(), width='stretch')
-    st.caption('PO details, handoff/QC status, the plan, and preceding messages have separate tool steps. These are read-only local fixture adapters for future APIs. No live factory API is called. Every route reaches END. Failures remain unclear.')
+        st.graphviz_chart(workflow_design_dot(), width='stretch')
+    st.caption('PO details, handoff/QC status, the plan, and preceding messages have separate tool steps. These are read-only local fixture adapters for future APIs. No live factory API is called. Each route ends. The overview groups error paths; the configured graph shows every failure exit.')
     st.caption('A supervisor hold is a suggested follow-up. It does not send a task or record human approval. Graph detail does not establish model accuracy; known reasoning gaps remain.')
+    with st.expander('How the proposed message filters work'):
+        st.write('Ignore unrelated messages. Use the previous three messages only when they name exactly one PO and the new message clearly continues that discussion. Record which messages supplied the PO.')
+        st.write('Use the last successful status calculation for the same factory and PO. A failed run or newly received message does not reset the 15-minute window. If the timestamp is unknown, continue processing.')
+        st.write('Within 15 minutes, retain routine updates for the next run without another report. A new blocker or correction continues immediately. If its importance is uncertain, prepare a clarification request rather than silently discarding it.')
+        st.caption('These filters need conversation history and status storage that are not connected here. Proposed LLM errors must remain visible as unclear. No live WhatsApp message is ignored or deferred by the current code.')
     with st.expander('What these four code nodes do', expanded=True):
         st.info('Check quotes, references and uncertainty — Python rules check the result format, exact source quotes, allowed evidence IDs, required dates/plan, and OCR uncertainty. If a pace calculation is available and these checks pass, Python chooses the conditional sewing-risk answer from that calculation.')
-        st.info('Keep the clear sewing-risk result — This is a routing marker. It passes the answer already chosen by the previous check. It makes no new model call and adds no new validation. Clear describes a conditional sewing forecast, not confirmed QC or shipment readiness.')
-        st.info('Keep the unclear result for follow-up — This is also a routing marker. It passes the unclear answer and its recorded reasons to the report step. The line supervisor is a suggested contact. No task or message is sent, no approval is recorded, and nothing is written to a factory system.')
+        st.info('Prepare clear result — This is a routing marker. It passes the answer already chosen by the previous check. It makes no new model call and adds no new validation. Clear describes a conditional sewing forecast, not confirmed QC or shipment readiness.')
+        st.info('Prepare clarification request — This is also a routing marker. It passes the unclear answer and its recorded reasons to the report step. The line supervisor is a suggested contact. No task or message is sent, no approval is recorded, and nothing is written to a factory system.')
         st.info('Prepare the report — Python code in report.py fills fixed English templates from the checked counts, due date and pace scenarios. It shows one outcome, with date/input warnings when needed. This step does not call an LLM or invent a new forecast. The run wrapper then saves the report and trace locally.')
         st.caption('Limit: quote/reference checks do not prove the meaning of a translation or catch every operational contradiction. The known stoppage/conflicting-update gaps remain open.')
     with st.expander('Inspect the configured LangGraph and exact prompts'):
