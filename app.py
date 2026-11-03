@@ -16,7 +16,7 @@ if getattr(live_workflow, 'WORKFLOW_VERSION', None) != 'typed-steps-v2':
     importlib.reload(live_workflow)
 from live_workflow import run_live, build_live_graph, INFERENCE_PROMPT, OCR_PROMPT
 import workflow_view
-if getattr(workflow_view, "VIEW_VERSION", None) != "message-filters-v5":
+if getattr(workflow_view, "VIEW_VERSION", None) != "context-filters-final":
     importlib.reload(workflow_view)
 from workflow_view import workflow_design_dot
 from report import build_report, short_time
@@ -54,9 +54,7 @@ def workflow():
     st.caption('A supervisor hold is a suggested follow-up. It does not send a task or record human approval. Graph detail does not establish model accuracy; known reasoning gaps remain.')
     with st.expander('How the proposed message filters work'):
         st.write('Ignore unrelated messages. Use the previous three messages only when they name exactly one PO and the new message clearly continues that discussion. Record which messages supplied the PO.')
-        st.write('Use the last successful status calculation for the same factory and PO. A failed run or newly received message does not reset the 15-minute window. If the timestamp is unknown, continue processing.')
-        st.write('Within 15 minutes, retain routine updates for the next run without another report. A new blocker or correction continues immediately. If its importance is uncertain, prepare a clarification request rather than silently discarding it.')
-        st.caption('These filters need conversation history and status storage that are not connected here. Proposed LLM errors must remain visible as unclear. No live WhatsApp message is ignored or deferred by the current code.')
+        st.caption('These filters need conversation history that are not connected here. Proposed LLM errors must remain visible as unclear. No live WhatsApp message is ignored by the current code.')
     with st.expander('What these four code nodes do', expanded=True):
         st.info('Check quotes, references and uncertainty — Python rules check the result format, exact source quotes, allowed evidence IDs, required dates/plan, and OCR uncertainty. If a pace calculation is available and these checks pass, Python chooses the conditional sewing-risk answer from that calculation.')
         st.info('Prepare clear result — This is a routing marker. It passes the answer already chosen by the previous check. It makes no new model call and adds no new validation. Clear describes a conditional sewing forecast, not confirmed QC or shipment readiness.')

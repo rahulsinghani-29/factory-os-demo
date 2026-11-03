@@ -2,7 +2,7 @@
 import json
 import live_workflow
 
-VIEW_VERSION = "message-filters-v5"
+VIEW_VERSION = "context-filters-final"
 
 
 def _render(nodes, edges, proposed=()):
@@ -47,11 +47,7 @@ def workflow_design_dot():
         'recent_three': ('TOOL CALL', 'Read the previous three messages\nSame factory and conversation, before this message'),
         'context_po': ('IF / ELSE', 'Exactly one PO in those messages\nand a clear continuation of that discussion?'),
         'inherit_po': ('CODE', 'Use that PO and record its source\nNever replace an explicit or conflicting PO'),
-        'last_refresh': ('TOOL CALL', 'Get the last successful PO status and its time\nFor this factory and PO'),
-        'recent_refresh': ('IF / ELSE', 'Was that update less than 15 minutes ago?'),
-        'material_change': ('IF / ELSE', 'Is there a new blocker or correction?'),
         'ignore_message': ('END', 'END · Ignore this message\nNo response and no PO report'),
-        'defer_report': ('END', 'END · Retain the message for the next run\nDo not produce another report now'),
     }
     nodes.update(proposed)
     nodes['clear_result'] = ('CODE', 'Prepare clear result\nPass the checked sewing-risk answer to the report')
@@ -65,19 +61,13 @@ def workflow_design_dot():
         ('understand_message','run_failed','Classifier failure'),
         ('relevant_message','ignore_message','No'),
         ('relevant_message','explicit_po','Yes'),
-        ('explicit_po','last_refresh','Yes'),
+        ('explicit_po','get_po_details','Yes'),
         ('explicit_po','recent_three','Missing'),
         ('explicit_po','ignore_message','Multiple / conflicting POs'),
         ('recent_three','context_po',''),
         ('context_po','inherit_po','Yes'),
         ('context_po','ignore_message','No / uncertain'),
-        ('inherit_po','last_refresh',''),
-        ('last_refresh','recent_refresh',''),
-        ('recent_refresh','material_change','Yes'),
-        ('recent_refresh','get_po_details','No / unknown time'),
-        ('material_change','get_po_details','Yes'),
-        ('material_change','defer_report','No'),
-        ('material_change','supervisor_hold','Uncertain'),
+        ('inherit_po','get_po_details',''),
         ('ocr_photo','run_failed','Read failure'),
         ('qwen_inference','run_failed','Model failure'),
         ('validate_evidence','run_failed','Check failure'),
